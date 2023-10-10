@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="../assets/css/styles.css" />
+  <title>Desarrollos ISI - Ventas</title>
+</head>
+<body>
+
+  <header>
+    <nav>
+      <ul>
+        <li><a href="../index.html">Inicio</a></li>
+        <li><a href="../real-estate/index.html">Modelos</a></li>
+        <li><a href="../sales/index.html">Ventas</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+
+    <h1>MODELOS</h1>
+
+     <form id="filter-form">
+      <div id="filter-section">
+        <input type="text"   id="text" placeholder="Nombre o descripción" class="filter-field">
+        <input type="number" id="bedrooms" placeholder="Número de habitaciones" class="filter-field">
+        <input type="number" id="price-min" placeholder="Precio mínimo" class="filter-field">
+        <input type="number" id="price-max" placeholder="Precio máximo" class="filter-field">
+
+        <button type="submit" id="apply-filters">Aplicar filtros</button>
+        <button type="reset" id="reset-filters">Restablecer</button>
+      </div>
+    </form>
+
+    <br>
+
+    <div class="table-container">
+
+      <table id="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Imagen</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
+            <th>Recámaras</th>
+            <th>Baños</th>
+            <th>Precio</th>
+            <th>Terreno (m²)</th>
+            <th>Construcción (m²)</th>
+          </tr>
+        </thead>
+        <tbody id="data-table-body">
+          <!-- Aquí se generará la tabla dinámicamente -->
+        </tbody>
+      </table>
+
+    </div>
+
+    <div id="message">
+      <p>No hay casas disponibles en este momento.</p>
+    </div>
+
+  </main>
+
+  <script src="../shared/utils.js"></script>
+  <script src="script.js"></script>
+
+</body>
+
+</html>

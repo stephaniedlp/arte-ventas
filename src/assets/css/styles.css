@@ -1,0 +1,246 @@
+@charset "UTF-8";
+@import url("");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f3f6f9;
+  font-family: "Jost", sans-serif;
+  font-size: 14px;
+  color: #283848;
+  margin: 0;
+}
+
+main {
+  background-color: #ffffff;
+  box-shadow: rgba(255, 255, 255, 0.25) 0 0 100px 0;
+  min-height: calc(100vh - 136px);
+  border-radius: 8px;
+  padding: 1rem 2rem;
+  margin: 1.5rem;
+}
+
+h1 {
+  font-size: 1.75rem;
+  margin-bottom: 20px;
+}
+
+.fx-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.fx-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.fx-space-between {
+  justify-content: space-between;
+}
+
+.fx-center {
+  justify-content: center;
+}
+
+.fx-items-center {
+  align-items: center;
+}
+
+@media screen and (max-width: 768px) {
+  .fx-hide-xs {
+    display: none;
+  }
+  .fx-column-xs {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: #5ebaa6;
+  box-shadow: 0 8px 8px -4px #bababa;
+  color: #fff;
+  text-align: center;
+  font-size: 1.25rem;
+  line-height: 1.25rem;
+  max-height: 88px;
+  min-height: 88px;
+  height: 88px;
+}
+
+header nav ul {
+  display: block;
+  text-transform: uppercase;
+  list-style: none;
+  padding: 0;
+  text-align: center;
+  margin: 0;
+}
+
+header nav li {
+  display: inline;
+  margin-right: 2rem;
+  padding: 0.5rem 2rem;
+  transition: color 0.3s ease;
+}
+
+header nav li:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 5px;
+}
+
+header nav a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+}
+
+@media screen and (max-width: 768px) {
+  header {
+    text-align: center;
+    font-size: 1rem;
+    line-height: 1rem;
+  }
+  header nav li {
+    margin-right: 1rem;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  header {
+    text-align: center;
+    font-size: 1rem;
+    line-height: 1rem;
+  }
+  header nav ul {
+    display: flex;
+    flex-direction: column;
+  }
+  header nav li {
+    margin-right: 0;
+  }
+}
+
+.table-container {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  white-space: nowrap;
+  font-size: 1rem;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+table thead tr {
+  background-color: #354a5f;
+  color: #fff;
+  text-align: left;
+}
+
+table thead tr th {
+  border: none;
+  font-size: 1.125rem;
+  padding: 2rem 1.25rem;
+  white-space: nowrap;
+}
+
+table tbody tr {
+  border-bottom: none;
+}
+
+table tbody tr:nth-of-type(even) {
+  background-color: #f3f6f9;
+}
+
+table tbody tr:last-of-type {
+  border-bottom: 4px solid #354a5f;
+}
+
+table tbody tr td {
+  padding: 1rem 1.25rem;
+  border: none;
+  white-space: wrap;
+}
+
+table tbody tr td img {
+  max-width: 100px;
+  height: auto;
+}
+
+#message {
+  display: none;
+  text-align: center;
+  font-size: 1rem;
+  padding: 2rem;
+}
+
+/* Estilos para la sección de filtros */
+#filter-section {
+  background-color: white;
+  padding: 2rem;
+  border: none;
+  border: 1px solid #d1dde8;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  border-radius: 3px;
+}
+
+/* Estilos para los campos de filtro */
+input[type="text"],
+input[type="number"] {
+  flex-grow: 1;
+  min-width: 200px;
+  font-size: 1rem;
+  padding: 1rem;
+  border: 1px solid #d1dde8;
+  border-radius: 3px;
+}
+
+input[type="text"]:focus, input[type="text"]:hover, input[type="text"]:active,
+input[type="number"]:focus,
+input[type="number"]:hover,
+input[type="number"]:active {
+  border: 1px solid #354a5f;
+}
+
+/* Estilos para el botón del filtro */
+button {
+  border: none;
+  border-radius: 3px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 1rem;
+  padding: 1rem 1.5rem;
+}
+
+button#apply-filters {
+  background-color: #3398db;
+  color: #fff;
+}
+
+button#apply-filters:hover {
+  background-color: #217dba;
+}
+
+button#reset-filters {
+  background-color: #f3f6f9;
+  color: #283848;
+}
+
+button#reset-filters:hover {
+  background-color: #e2e9f1;
+}
