@@ -1,0 +1,20 @@
+{
+    "name": "ventas-residencial",
+    "version": "1.0.0",
+    "description": "Sistema de ventas de arte de slpj y adioshumanos.",
+    "main": "index.html",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "start": "concurrently \"npm run watch:sass\" \"npm run serve\"",
+      "serve": "live-server src",
+      "watch:sass": "node-sass --output-style expanded src/assets/scss/styles.scss src/assets/css/styles.css --watch"
+    },
+    "author": "steph y ulises",
+    "license": "MIT",
+    "devDependencies": {
+      "concurrently": "^8.2.1",
+      "live-server": "^1.2.2",
+      "node-sass": "^9.0.0"
+    }
+  }
+  
