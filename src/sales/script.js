@@ -1,17 +1,15 @@
 //#region MODELO DE DATOS (MODELS)
 
 // Definimos la clase RealEstate
-class RealEstate {
+class Game {
 
-    constructor(id, name, description, bedrooms, bathrooms, price, landArea, constructionArea, image) {
+    constructor(id, title, description, platform, rating, price, image) {
       this.id = id;
-      this.name = name;
+      this.title = title;
       this.description = description;
-      this.bedrooms = bedrooms;
-      this.bathrooms = bathrooms;
+      this.platform = platform;
+      this.rating = rating;
       this.price = price;
-      this.landArea = landArea;
-      this.constructionArea = constructionArea;
       this.image = image;
     }
   
@@ -20,25 +18,25 @@ class RealEstate {
   
   
   // Creamos objetos de modelos de casas
-  const house1 = new RealEstate(1, "Casa Alfa", "Hermosa casa con vistas panorámicas.", 3, 2.5, 250000, 1000, 150, "real-estate-1.jpg");
-  const house2 = new RealEstate(2, "Casa Beta", "Diseño moderno y espacioso con acabados de lujo.", 3, 3.5, 350000, 300, 180, "real-estate-2.jpg");
-  const house3 = new RealEstate(3, "Casa Teta", "Casa ideal para familias grandes con jardín y areas de convivencia.", 4, 4.5, 450000, 400, 200, "real-estate-3.jpg");
+  const game1 = new Game(1, "No More Heroes", "Juego de acción en 3D", "Wii", 85, 600, "nmh.jpg");
+  const game2 = new Game(2, "Hello Kitty: Roller Rescue", "Juego de carreras en 3D", "GameCube", 64, 400, "hkrr.jpg");
+  const game3 = new Game(3, "Castlevania: Dawn of Sorrow", "Plataformas, puzzle y acción en 2D lateral", "Nintendo DS", 89, 250, "cdos.jpg");
   
   
   // Almacenamos los objetos en un array
-  const realEstateList = [house1, house2, house3];
+  const gameList = [game1, game2, game3];
   
   
   // Accedemos datos por indices
   console.log('Impresion en consola de elementos accesados por indices: ');
-  console.log(realEstateList[0]);
-  console.log(realEstateList[1]);
-  console.log(realEstateList[1]);
+  console.log(gameList[0]);
+  console.log(gameList[1]);
+  console.log(gameList[2]);
   
   
   // Accedemos datos con funcion forEach() de array
   console.log('Impresion en consola de elementos accesados con forEach(): ');
-  realEstateList.forEach(item => {console.log(item)});
+  gameList.forEach(item => {console.log(item)});
   
   //#endregion
   
@@ -46,7 +44,7 @@ class RealEstate {
   //#region VISTA DE LOS MODELOS EN HTML (VIEW)
   
   // Funcion que controla el despliegue de un array de RealEstate en la tabla, asi como el mensaje a mostrar.
-  function displayTable(houses) {
+  function displayTable(games) {
   
     clearTable();
   
@@ -54,7 +52,7 @@ class RealEstate {
   
     setTimeout(() => {
   
-      if (houses.length === 0) {
+      if (games.length === 0) {
   
         showNotFoundMessage();
   
@@ -64,22 +62,20 @@ class RealEstate {
   
           const tablaBody = document.getElementById('data-table-body');
   
-          const imagePath = `../assets/img/real-estate/`;
+          const imagePath = `/public/games/`;
   
-          houses.forEach(house => {
+          games.forEach(game => {
   
             const row = document.createElement('tr');
   
             row.innerHTML = `
-              <td> ${house.id} </td>
-              <td> <img src="${imagePath + house.image}" alt="${house.name}" width="100"> </td>
-              <td>${house.name}</td>
-              <td>${house.description}</td>
-              <td>${house.bedrooms}</td>
-              <td>${house.bathrooms}</td>
-              <td>${formatCurrency(house.price)}</td>
-              <td>${formatM2(house.landArea)}</td>
-              <td>${formatM2(house.constructionArea)}</td>
+              <td> ${game.id} </td>
+              <td> <img src="${imagePath + game.image}" alt="${game.title}" width="100"> </td>
+              <td>${game.title}</td>
+              <td>${game.description}</td>
+              <td>${game.platform}</td>
+              <td>${game.rating}</td>
+              <td>${(game.price)}</td>
             `;
   
             tablaBody.appendChild(row);
@@ -88,7 +84,7 @@ class RealEstate {
   
       }
   
-    }, 2000);
+    }, 20);
   
   }
   
@@ -115,7 +111,7 @@ class RealEstate {
   function showNotFoundMessage() {
     const message = document.getElementById('message');
   
-    message.innerHTML = 'No se encontraron casas con el filtro proporcionado.';
+    message.innerHTML = 'No se encontraron juegos con el filtro proporcionado.';
   
     message.style.display = 'block';
   }
@@ -152,25 +148,25 @@ class RealEstate {
   
   // Funcion que gestiona la aplicacion del filtro a los datos y su despliegue.
   function applyFilters() {
-    const filterText = document.getElementById('text').value.toLowerCase();;
-    const filterBedrooms = parseFloat(document.getElementById('bedrooms').value);
+    const filterText = document.getElementById('text').value.toLowerCase();
+    const filterPlatform = parseFloat(document.getElementById('platform').value).toLowerCase();
     const filterMinPrice = parseFloat(document.getElementById('price-min').value);
     const filterMaxPrice = parseFloat(document.getElementById('price-max').value);
   
-    const filteredHouses = filterHouses(realEstateList, filterText, filterBedrooms, filterMinPrice, filterMaxPrice);
+    const filteredGames = filterGames(gameList, filterText, filterPlatform, filterMinPrice, filterMaxPrice);
   
-    displayTable(filteredHouses);
+    displayTable(filteredGames);
   }
   
   
   // Funcion con la logica para filtrar las casas.
-  function filterHouses(houses, text, bedrooms, minPrice, maxPrice) {
+  function filterGames(games, text, platform, minPrice, maxPrice) {
   
-    return houses.filter( house =>
-        (!bedrooms || house.bedrooms === bedrooms) &&
-        (!minPrice || house.price >= minPrice) &&
-        (!maxPrice || house.price <= maxPrice) &&
-        (!text     || house.name.toLowerCase().includes(text) || house.description.toLowerCase().includes(text))
+    return games.filter( game =>
+        (!platform || game.platform.toLowerCase().includes(platform)) &&
+        (!minPrice || game.price >= minPrice) &&
+        (!maxPrice || game.price <= maxPrice) &&
+        (!text     || game.title.toLowerCase().includes(text) || game.description.toLowerCase().includes(text))
       );
   }
   
@@ -179,7 +175,7 @@ class RealEstate {
   
   //#region INICIALIZAMOS FUNCIONALIDAD (CONTROLLER)
   
-  displayTable(realEstateList);
+  displayTable(gameList);
   
   initButtonsHandler();
   

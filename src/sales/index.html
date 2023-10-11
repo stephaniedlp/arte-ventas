@@ -4,7 +4,7 @@
   <link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="../assets/css/styles.css" />
-  <title>te arte ar</title>
+  <title>StephGames | Ventas</title>
 </head>
 <body>
 
@@ -12,7 +12,7 @@
     <nav>
       <ul>
         <li><a href="../index.html">inicio</a></li>
-        <li><a href="../sales/index.html">sdlpj & adioshumanos</a></li>
+        <li><a href="../sales/index.html">StephGames</a></li>
       </ul>
     </nav>
   </header>
@@ -24,7 +24,7 @@
      <form id="filter-form">
       <div id="filter-section">
         <input type="text"   id="text" placeholder="Nombre o descripción" class="filter-field">
-        <input type="number" id="bedrooms" placeholder="Número de habitaciones" class="filter-field">
+        <input type="text" id="platform" placeholder="Plataforma" class="filter-field">
         <input type="number" id="price-min" placeholder="Precio mínimo" class="filter-field">
         <input type="number" id="price-max" placeholder="Precio máximo" class="filter-field">
 
@@ -42,13 +42,11 @@
           <tr>
             <th>ID</th>
             <th>Imagen</th>
-            <th>Nombre</th>
+            <th>Título</th>
             <th>Descripción</th>
-            <th>Recámaras</th>
-            <th>Baños</th>
+            <th>Plataforma</th>
+            <th>Calificación</th>
             <th>Precio</th>
-            <th>Terreno (m²)</th>
-            <th>Construcción (m²)</th>
           </tr>
         </thead>
         <tbody id="data-table-body">
@@ -63,9 +61,8 @@
     </div>
 
   </main>
-
-  <script src="../shared/utils.js"></script>
-  <script src="script.js"></script>
+  
+  <script src="/src/sales/script.js"></script>
 
 </body>
 
