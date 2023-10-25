@@ -39,6 +39,11 @@ class Game {
   
       }
   
+<<<<<<< HEAD
+=======
+    }, 200);
+  
+>>>>>>> c803d0e7dce66f38a3328cdf8201e34d47be5ecd
   }
 // Funcion que agrega los datos de los los juegos a la tabla.
 
