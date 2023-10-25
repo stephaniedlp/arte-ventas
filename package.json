@@ -15,8 +15,5 @@
         "concurrently": "^8.2.1",
         "live-server": "^1.1.0",
         "node-sass": "^9.0.0"
-    },
-    "dependencies": {
-        "bootstrap": "^5.3.2"
     }
 }

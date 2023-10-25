@@ -1,6 +1,8 @@
-//#region MODELO DE DATOS (MODELS)
-
-// Definimos la clase RealEstate
+//#region  MODELO DE DATOS (MODELS)
+ 
+const imagePath = `../assets/img/juegos/`;
+let gameList = [];
+// Definimos la clase Game
 class Game {
 
     constructor(id, title, description, platform, rating, price, image) {
@@ -12,46 +14,19 @@ class Game {
       this.price = price;
       this.image = image;
     }
-  
   }
-  
-  
-  
-  // Creamos objetos de modelos de casas
-  const game1 = new Game(1, "No More Heroes", "Juego de acción en 3D", "Wii", 85, 600, "nmh.jpg");
-  const game2 = new Game(2, "Hello Kitty: Roller Rescue", "Juego de carreras en 3D", "GameCube", 64, 400, "hkrr.jpg");
-  const game3 = new Game(3, "Castlevania: Dawn of Sorrow", "Plataformas, puzzle y acción en 2D lateral", "Nintendo DS", 89, 250, "cdos.jpg");
-  
-  
-  // Almacenamos los objetos en un array
-  const gameList = [game1, game2, game3];
-  
-  
-  // Accedemos datos por indices
-  console.log('Impresion en consola de elementos accesados por indices: ');
-  console.log(gameList[0]);
-  console.log(gameList[1]);
-  console.log(gameList[2]);
-  
-  
-  // Accedemos datos con funcion forEach() de array
-  console.log('Impresion en consola de elementos accesados con forEach(): ');
-  gameList.forEach(item => {console.log(item)});
-  
-  //#endregion
-  
+//#endregion
+ 
   
   //#region VISTA DE LOS MODELOS EN HTML (VIEW)
   
   // Funcion que controla el despliegue de un array de RealEstate en la tabla, asi como el mensaje a mostrar.
   function displayTable(games) {
-  
+  debugger
     clearTable();
   
     showLoadingMessage();
-  
-    setTimeout(() => {
-  
+   
       if (games.length === 0) {
   
         showNotFoundMessage();
@@ -59,36 +34,36 @@ class Game {
       } else {
   
           hideMessage();
-  
-          const tablaBody = document.getElementById('data-table-body');
-  
-          const imagePath = `/public/games/`;
-  
-          games.forEach(game => {
-  
-            const row = document.createElement('tr');
-  
-            row.innerHTML = `
-              <td> ${game.id} </td>
-              <td> <img src="${imagePath + game.image}" alt="${game.title}" width="100"> </td>
-              <td>${game.title}</td>
-              <td>${game.description}</td>
-              <td>${game.platform}</td>
-              <td>${game.rating}</td>
-              <td>${(game.price)}</td>
-            `;
-  
-            tablaBody.appendChild(row);
-  
-          });
+          displayGamesTable(games);
+          
   
       }
   
-    }, 20);
-  
   }
-  
-  
+// Funcion que agrega los datos de los los juegos a la tabla.
+
+  function displayGamesTable(games){
+    const tablaBody = document.getElementById('data-table-body');
+
+    games.forEach(game => {
+
+      const row = document.createElement('tr');
+
+      row.innerHTML = `
+        <td> ${game.id} </td>
+        <td> <img src="${imagePath + game.image}" alt="${game.title}" width="100"> </td>
+        <td>${game.title}</td>
+        <td>${game.description}</td>
+        <td>${game.platform}</td>
+        <td>${game.rating}</td>
+        <td>${formatCurrency(game.price)}</td>
+        
+      `;
+
+      tablaBody.appendChild(row);
+
+    });
+  }
   // Funcion que limpia la tabla
   function clearTable() {
     const tableBody = document.getElementById('data-table-body');
@@ -172,12 +147,37 @@ class Game {
   
   //#endregion
   
-  
+  function searchData() {
+
+    const OPTIONS = {
+      method: 'GET'
+    };
+
+    fetch(`${apiURL}/videojuegos`, OPTIONS)
+      .then(response => response.json())
+      .then(data => {
+        // Mapeamos los datos de modelos a objetos de la clase RealEstate.
+        gameList = data.map(item => {
+
+          return new Game(
+            item.id,
+            item.title,
+            item.description,
+            item.platform,
+            item.rating,
+            item.price,
+            item.image
+          );
+        })
+        
+        displayTable(gameList);
+      })
+    }
   //#region INICIALIZAMOS FUNCIONALIDAD (CONTROLLER)
-  
-  displayTable(gameList);
+
+  showLoadingMessage();
   
   initButtonsHandler();
-  
+  searchData();
   //#endregion
   

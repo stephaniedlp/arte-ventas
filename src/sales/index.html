@@ -12,25 +12,32 @@
     <nav>
       <ul>
         <li><a href="../index.html">inicio</a></li>
-        <li><a href="../sales/index.html">StephGames</a></li>
+        <li><a href="../sales/index.html">Videojuegos</a></li>
+        <li><a href="../videojuegos/index.html"> Admin</a></li>
+
       </ul>
     </nav>
   </header>
 
   <main>
+    <div class="fx-row fx-space-between fx-items-center">
 
-    <h1>Modelos</h1>
+    <h1>Games</h1>
 
-     <form id="filter-form">
-      <div id="filter-section">
+    
+    </div>
+
+    <form id="filter-form"
+      class="filter-section">
         <input type="text"   id="text" placeholder="Nombre o descripción" class="filter-field">
         <input type="text" id="platform" placeholder="Plataforma" class="filter-field">
         <input type="number" id="price-min" placeholder="Precio mínimo" class="filter-field">
         <input type="number" id="price-max" placeholder="Precio máximo" class="filter-field">
 
-        <button type="submit" id="apply-filters">Aplicar filtros</button>
-        <button type="reset" id="reset-filters">Restablecer</button>
-      </div>
+
+        <button type="submit" id="apply-filters" class="btn-submit">Aplicar filtros</button>
+        <button type="reset" id="reset-filters" class="btn">Restablecer</button>
+      
     </form>
 
     <br>
@@ -41,12 +48,12 @@
         <thead>
           <tr>
             <th>ID</th>
-            <th>Imagen</th>
             <th>Título</th>
             <th>Descripción</th>
             <th>Plataforma</th>
             <th>Calificación</th>
-            <th>Precio</th>
+            <th class="text-right">Precio</th>
+            <th>Imagen</th>
           </tr>
         </thead>
         <tbody id="data-table-body">
@@ -56,13 +63,16 @@
 
     </div>
 
-    <div id="message">
+    <div id="message" class="message">
       <p>No hay casas disponibles en este momento.</p>
     </div>
 
   </main>
   
-  <script src="/src/sales/script.js"></script>
+  <script src="../shared/utils.js"></script>
+  <script src="../shared/fetch-api.js"></script>
+  
+  <script src="./script.js"></script>
 
 </body>
 
