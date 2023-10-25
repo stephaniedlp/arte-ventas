@@ -239,7 +239,7 @@ function closeAddSaleModal() {
 
 
 function processSubmitSale() {
-  const customerName = document.getElementById('vendedor-name-field').value;
+  const workerName = document.getElementById('vendedor-name-field').value;
   const realEstate = document.getElementById('real-estate-field').value;
   const salePrice = document.getElementById('sale-price-field').value;
   const saleDate = document.getElementById('sale-date-field').value;
@@ -248,13 +248,12 @@ function processSubmitSale() {
 
   const saleToSave = new Sale(
     null,
-    customerName,
-    customerPhone,
+    workerName,
     saleDate,
     salesman,
     realEstate,
-    parseFloat(salePrice),
-    notes
+    parseFloat(gamePrice),
+    gamenotes
   );
 
   createSale(saleToSave);
