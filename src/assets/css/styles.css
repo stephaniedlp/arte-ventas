@@ -24,7 +24,7 @@ main {
 }
 
 h1 {
-  font-size: 1.75rem;
+  font-size: 3.75rem;
   margin-bottom: 20px;
 }
 
@@ -94,7 +94,7 @@ header {
   background-color: #344a5e;
   color: #fff;
   text-align: center;
-  font-size: 1.25rem;
+  font-size: 1rem;
   line-height: 1.25rem;
   max-height: 88px;
   min-height: 88px;

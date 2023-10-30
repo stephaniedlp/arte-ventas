@@ -5,14 +5,15 @@ let gameList = [];
 // Definimos la clase Game
 class Game {
 
-    constructor(id, title, description, platform, rating, price, image) {
-      this.id = id;
+    constructor( title, description, platform, rating, price, image,id) {
+      
       this.title = title;
       this.description = description;
       this.platform = platform;
       this.rating = rating;
       this.price = price;
       this.image = image;
+      this.id = id;
     }
   }
 //#endregion
@@ -22,7 +23,7 @@ class Game {
   
   // Funcion que controla el despliegue de un array de RealEstate en la tabla, asi como el mensaje a mostrar.
   function displayTable(games) {
-  debugger
+
     clearTable();
   
     showLoadingMessage();
@@ -39,11 +40,8 @@ class Game {
   
       }
   
-<<<<<<< HEAD
-=======
-    }, 200);
+ 
   
->>>>>>> c803d0e7dce66f38a3328cdf8201e34d47be5ecd
   }
 // Funcion que agrega los datos de los los juegos a la tabla.
 
@@ -56,12 +54,13 @@ class Game {
 
       row.innerHTML = `
         <td> ${game.id} </td>
-        <td> <img src="${imagePath + game.image}" alt="${game.title}" width="100"> </td>
         <td>${game.title}</td>
         <td>${game.description}</td>
         <td>${game.platform}</td>
         <td>${game.rating}</td>
         <td>${formatCurrency(game.price)}</td>
+        
+        <td> <img src="${imagePath + game.image}" alt="${game.title}" width="100"> </td>
         
       `;
 
@@ -165,13 +164,13 @@ class Game {
         gameList = data.map(item => {
 
           return new Game(
-            item.id,
             item.title,
             item.description,
             item.platform,
             item.rating,
             item.price,
-            item.image
+            item.image,
+            item.id
           );
         })
         
