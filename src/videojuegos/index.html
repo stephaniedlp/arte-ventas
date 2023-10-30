@@ -1,19 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+
   <link rel="stylesheet" type="text/css" href="../assets/css/styles.css" />
   <title>StephGames | Ventas</title>
 </head>
+
 <body>
 
   <header>
     <nav>
       <ul>
-        <li><a href="../index.html">inicio</a></li>
-        <li><a href="../sales/index.html">Videojuegos</a></li>
-        <li><a href="../videojuegos/index.html"> Admin</a></li>
+        <li><a href="../index.html">Inicio</a></li>
+        <li><a href="../sales/index.html">Catálogo</a></li>
+        <li><a href="../videojuegos/index.html">Admin</a></li>
 
       </ul>
     </nav>
@@ -25,7 +34,58 @@
 
       <h1>Juegos</h1>
 
-      <button id="addSale" class="btn-action">Agregar Nueva Venta</button>
+      <!-- <button id="addSale" class="btn-action">Agregar Nueva Venta</button> -->
+
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Agregar Nueva Venta
+      </button>
+
+      <!-- Modal -->
+      <div class="modal modal-lg fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar Nueva Venta</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form id="sale-form" class="form-section">
+
+                <label for="vendedor-name-field">Vendedor:</label>
+                <input type="text" id="customer-name-field" class="form-field" required>
+
+
+                <label for="real-estate-field">Modelo de Casa:</label>
+                <select id="real-estate-field" class="form-field" required>
+                  <!-- Llenaremos las opciones con datos consumidos desde una api -->
+                </select>
+
+                <label for="sale-price-field">Precio de Venta:</label>
+                <input type="number" id="sale-price-field" class="form-field" required>
+
+                <label for="sale-date-field">Fecha de Venta:</label>
+                <input type="date" id="sale-date-field" class="form-field" required>
+
+                <label for="salesman-field">Vendedor:</label>
+                <input type="text" id="salesman-field" required>
+
+                <label for="notes-field">Detalles de la Venta:</label>
+                <textarea id="notes-field" class="form-field" required></textarea>
+
+                <button type="submit" class="btn-submit">Guardar Venta</button>
+
+              </form>
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
     </div>
 
@@ -35,7 +95,6 @@
 
       <select id="real-estate-filter" class="filter-field" placeholder="Modelo de Casa">
         <option value="" selected>Todos los modelos</option>
-        <!-- Llenaremos las opciones con datos consumidos desde una api -->
       </select>
 
       <input type="text" id="customer-filter" placeholder="Nombre del Cliente" class="filter-field">
@@ -71,51 +130,18 @@
     </div>
 
     <div id="message" class="message">
-      <p>No se ha realizado una consulta de ventas.</p>
+      <p>No se ha realizado una consulta</p>
     </div>
 
     <div id="modal-background" class="modal-background">
 
     </div>
 
-    <div id="modal" class="modal">
-
-      <h2>NUEVA VENTA</h2>
-
-      <form id="sale-form" class="form-section">
-
-        <label for="vendedor-name-field">Vendedor:</label>
-        <input type="text" id="customer-name-field" class="form-field" required>
-
-
-        <label for="real-estate-field">Modelo de Casa:</label>
-        <select id="real-estate-field" class="form-field" required>
-          <!-- Llenaremos las opciones con datos consumidos desde una api -->
-        </select>
-
-        <label for="sale-price-field">Precio de Venta:</label>
-        <input type="number" id="sale-price-field" class="form-field" required>
-
-        <label for="sale-date-field">Fecha de Venta:</label>
-        <input type="date" id="sale-date-field" class="form-field" required>
-
-        <label for="salesman-field">Vendedor:</label>
-        <input type="text" id="salesman-field" required>
-
-        <label for="notes-field">Detalles de la Venta:</label>
-        <textarea id="notes-field" class="form-field" required></textarea>
-
-        <button type="submit" class="btn-submit">Guardar Venta</button>
-
-      </form>
-
-    </div>
-
   </main>
-  
+
   <script src="../shared/utils.js"></script>
   <script src="../shared/fetch-api.js"></script>
-  
+
   <script src="/src/sales/script.js"></script>
 
 </body>

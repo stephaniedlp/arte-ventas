@@ -1,83 +1,247 @@
-
-//#region 1. VARIABLES GLOBALES
-
-
-//#endregion
-
-
-//#region 2. MODELO DE DATOS (MODELS)
-
-// Definimos la clase Sale
-class Venta {
-  constructor(id, customerName, customerPhone, saleDate, salesman, realEstate, salePrice, notes) {
-    this.id = id; // Identificador de la venta
-    this.workerName = workerName; // Nombre del cliente
-    this.gameDate = gameDate; // Teléfono del cliente
-    this.gameName = gameName; // Fecha de la venta
-    this.gameNote = gameNote;
-    this.gamePrice = gamePrice; // Información adicional sobre la venta
+class Task {
+  constructor(id, title, description, completed, priority, tag, dueDate) {
+    this.id = id;
+    this.title = title;
+    this.description = description;
+    this.completed = completed;
+    this.priority = priority;
+    this.tag = tag;
+    this.dueDate = dueDate;
   }
 }
 
-function mapAPIToVentas(data) {
-  return data.map(item => {
-    return new Venta(
+function mapAPIToTasks(data) {
+  return data.map((item) => {
+    return new Task(
       item.id,
-      item.workerName,
-      new Date(item.saleDate),
-      item.gameName,
-      item.gamePrice,
-      item.gameNote
+      item.title,
+      item.description,
+      item.completed,
+      item.priority,
+      item.tag,
+      new Date(item.dueDate)
     );
   });
 }
 
-// Definimos la clase de RealEstate con los datos necesarios
-class GameDescriptor {
-
-  constructor(id, name, price) {
-    this.id = id;
-    this.name = name;
-    this.price = price;
-  }
-
+function APIToTask(data) {
+  return new Task(
+    data.id,
+    data.title,
+    data.description,
+    data.completed,
+    data.priority,
+    data.tag,
+    new Date(data.dueDate)
+  );
 }
 
+class Game {
+  constructor(id, title, description, platform, rating, price, image) {
+    this.id = id;
+    this.title = title;
+    this.description = description;
+    this.platform = platform;
+    this.rating = rating;
+    this.price = price;
+    this.image = image;
+  }
+}
+
+const game1 = new Game(
+  1,
+  "No More Heroes",
+  "Juego de acción en 3D",
+  "Wii",
+  85,
+  600,
+  "nmh.jpg"
+);
+const game2 = new Game(
+  2,
+  "Hello Kitty: Roller Rescue",
+  "Juego de carreras en 3D",
+  "GameCube",
+  64,
+  400,
+  "hkrr.jpg"
+);
+const game3 = new Game(
+  3,
+  "Castlevania: Dawn of Sorrow",
+  "Plataformas, puzzle y acción en 2D lateral",
+  "Nintendo DS",
+  89,
+  250,
+  "cdos.jpg"
+);
+
+const gameList = [game1, game2, game3];
+
+console.log("Impresion en consola de elementos accesados por indices: ");
+console.log(gameList[0]);
+console.log(gameList[1]);
+console.log(gameList[2]);
+
+console.log("Impresion en consola de elementos accesados con forEach(): ");
+gameList.forEach((item) => {
+  console.log(item);
+});
+
+// Accedemos datos con funcion forEach() de array
+console.log("Impresion en consola de elementos accesados con forEach(): ");
+gameList.forEach((item) => {
+  console.log(item);
+});
+
+// Funcion que controla el despliegue de un array de juevos en la tabla, asi como el mensaje a mostrar.
+function displayTable(games) {
+  clearTable();
+
+  showLoadingMessage();
+
+  setTimeout(() => {
+    if (games.length === 0) {
+      showNotFoundMessage();
+    } else {
+      hideMessage();
+
+      const tablaBody = document.getElementById("data-table-body");
+
+      const imagePath = `/public/games/`;
+
+      games.forEach((game) => {
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+              <td> ${game.id} </td>
+              <td> <img src="${imagePath + game.image}" alt="${
+          game.title
+        }" width="100"> </td>
+              <td>${game.title}</td>
+              <td>${game.description}</td>
+              <td>${game.platform}</td>
+              <td>${game.rating}</td>
+              <td>${game.price}</td>
+            `;
+
+        tablaBody.appendChild(row);
+      });
+    }
+  }, 200);
+}
 
 function mapAPIToGameDescriptors(data) {
-  return data.map(item => {
-    return new GameDescriptor(
-      item.id,
-      item.name,
-      item.price
-    );
+  return data.map((item) => {
+    return new GameDescriptor(item.id, item.name, item.price);
   });
+}
+
+function clearTable() {
+  const tableBody = document.getElementById("data-table-body");
+
+  tableBody.innerHTML = "";
+}
+
+function showLoadingMessage() {
+  const message = document.getElementById("message");
+
+  message.innerHTML = "Cargando...";
+
+  message.style.display = "block";
+}
+
+// Funcion que muestra mensaje de que no se encuentraron datos
+function showNotFoundMessage() {
+  const message = document.getElementById("message");
+
+  message.innerHTML = "No se encontraron juegos con el filtro proporcionado.";
+
+  message.style.display = "block";
+}
+
+// Funcion que oculta mensaje
+function hideMessage() {
+  const message = document.getElementById("message");
+
+  message.style.display = "none";
 }
 
 //#endregion
 
+//#region FILTROS (VIEW)
+
+// Funcion que inicializa los eventos de los botones del filto
+function initButtonsHandler() {
+  document.getElementById("filter-form").addEventListener("submit", (event) => {
+    event.preventDefault();
+    applyFilters();
+  });
+
+  document.getElementById("reset-filters").addEventListener("click", () => {
+    document
+      .querySelectorAll("input.filter-field")
+      .forEach((input) => (input.value = ""));
+    applyFilters();
+  });
+}
+
+// Funcion que gestiona la aplicacion del filtro a los datos y su despliegue.
+function applyFilters() {
+  const filterText = document.getElementById("text").value.toLowerCase();
+  const filterPlatform = parseFloat(
+    document.getElementById("platform").value
+  ).toLowerCase();
+  const filterMinPrice = parseFloat(document.getElementById("price-min").value);
+  const filterMaxPrice = parseFloat(document.getElementById("price-max").value);
+
+  const filteredGames = filterGames(
+    gameList,
+    filterText,
+    filterPlatform,
+    filterMinPrice,
+    filterMaxPrice
+  );
+
+  displayTable(filteredGames);
+}
+
+// Funcion con la logica para filtrar
+function filterGames(games, text, platform, minPrice, maxPrice) {
+  return games.filter(
+    (game) =>
+      (!platform || game.platform.toLowerCase().includes(platform)) &&
+      (!minPrice || game.price >= minPrice) &&
+      (!maxPrice || game.price <= maxPrice) &&
+      (!text ||
+        game.title.toLowerCase().includes(text) ||
+        game.description.toLowerCase().includes(text))
+  );
+}
+
+//#endregion
+
+//#region INICIALIZAMOS FUNCIONALIDAD (CONTROLLER)
+
+displayTable(gameList);
+
+initButtonsHandler();
 
 //#region 3. VENTAS (VIEW)
 
 function displaySalesView(ventas) {
-
   clearTable();
 
   showLoadingMessage();
 
   if (ventas.length === 0) {
-
     showNotFoundMessage();
-
   } else {
-
     hideMessage();
 
     displaySalesTable(ventas);
   }
-
 }
-
 
 function displayClearSalesView() {
   clearTable();
@@ -85,15 +249,12 @@ function displayClearSalesView() {
   showInitialMessage();
 }
 
-
 // Funcion que agrega los datos de los modelos de casas a la tabla.
 function displaySalesTable(ventas) {
+  const tablaBody = document.getElementById("data-table-body");
 
-  const tablaBody = document.getElementById('data-table-body');
-
-  sales.forEach(venta => {
-
-    const row = document.createElement('tr');
+  sales.forEach((venta) => {
+    const row = document.createElement("tr");
 
     row.innerHTML = `
       <td>${ventas.id}</td>
@@ -108,143 +269,131 @@ function displaySalesTable(ventas) {
     `;
 
     tablaBody.appendChild(row);
-
   });
 
   initDeleteSaleButtonHandler();
 }
 
-
 // Funcion que limpia la tabla
 function clearTable() {
-  const tableBody = document.getElementById('data-table-body');
+  const tableBody = document.getElementById("data-table-body");
 
-  tableBody.innerHTML = '';
+  tableBody.innerHTML = "";
 }
-
 
 // Funcion que muestra mensaje de carga
 function showLoadingMessage() {
-  const message = document.getElementById('message');
+  const message = document.getElementById("message");
 
-  message.innerHTML = 'Cargando...';
+  message.innerHTML = "Cargando...";
 
-  message.style.display = 'block';
+  message.style.display = "block";
 }
-
 
 // Funcion que muestra mensaje de carga
 function showInitialMessage() {
-  const message = document.getElementById('message');
+  const message = document.getElementById("message");
 
-  message.innerHTML = 'No se ha realizado una consulta de ventas.';
+  message.innerHTML = "No se ha realizado una consulta de ventas.";
 
-  message.style.display = 'block';
+  message.style.display = "block";
 }
-
 
 // Funcion que muestra mensaje de que no se encuentraron datos
 function showNotFoundMessage() {
-  const message = document.getElementById('message');
+  const message = document.getElementById("message");
 
-  message.innerHTML = 'No se encontraron casas con el filtro proporcionado.';
+  message.innerHTML = "No se encontraron casas con el filtro proporcionado.";
 
-  message.style.display = 'block';
+  message.style.display = "block";
 }
-
 
 // Funcion que oculta mensaje
 function hideMessage() {
-  const message = document.getElementById('message');
+  const message = document.getElementById("message");
 
-  message.style.display = 'none';
+  message.style.display = "none";
 }
 
 //#endregion
 
-
 //#region 4. FILTROS (VIEW)
 
 function initFilterButtonsHandler() {
-
-  document.getElementById('filter-form').addEventListener('submit', event => {
+  document.getElementById("filter-form").addEventListener("submit", (event) => {
     event.preventDefault();
     searchSales();
   });
 
-  document.getElementById('reset-filters').addEventListener('click', () => clearSales());
-
+  document
+    .getElementById("reset-filters")
+    .addEventListener("click", () => clearSales());
 }
 
-
 function clearSales() {
-  document.querySelector('select.filter-field').selectedIndex = 0;
-  document.querySelectorAll('input.filter-field').forEach(input => input.value = '');
+  document.querySelector("select.filter-field").selectedIndex = 0;
+  document
+    .querySelectorAll("input.filter-field")
+    .forEach((input) => (input.value = ""));
 
   displayClearSalesView();
 }
 
-
 function resetSales() {
-  document.querySelector('select.filter-field').selectedIndex = 0;
-  document.querySelectorAll('input.filter-field').forEach(input => input.value = '');
+  document.querySelector("select.filter-field").selectedIndex = 0;
+  document
+    .querySelectorAll("input.filter-field")
+    .forEach((input) => (input.value = ""));
   searchSales();
 }
 
-
 function searchSales() {
-  const realEstate = document.getElementById('real-estate-filter').value;
-  const customerName = document.getElementById('customer-filter').value;
-  const salesman = document.getElementById('salesman-filter').value;
-  const saleDate = document.getElementById('date-filter').value;
+  const realEstate = document.getElementById("real-estate-filter").value;
+  const customerName = document.getElementById("customer-filter").value;
+  const salesman = document.getElementById("salesman-filter").value;
+  const saleDate = document.getElementById("date-filter").value;
 
   getSalesData(realEstate, customerName, salesman, saleDate);
 }
 
 //#endregion
 
-
 //#region 5. BOTONES PARA AGREGAR Y ELIMINAR VENTAS (VIEW)
 
 function initAddSaleButtonsHandler() {
-
-  document.getElementById('addSale').addEventListener('click', () => {
-    openAddSaleModal()
+  document.getElementById("addSale").addEventListener("click", () => {
+    openAddSaleModal();
   });
 
-  document.getElementById('modal-background').addEventListener('click', () => {
+  document.getElementById("modal-background").addEventListener("click", () => {
     closeAddSaleModal();
   });
 
-  document.getElementById('sale-form').addEventListener('submit', event => {
+  document.getElementById("sale-form").addEventListener("submit", (event) => {
     event.preventDefault();
     processSubmitSale();
   });
-
 }
-
 
 function openAddSaleModal() {
-  document.getElementById('sale-form').reset();
-  document.getElementById('modal-background').style.display = 'block';
-  document.getElementById('modal').style.display = 'block';
+  document.getElementById("sale-form").reset();
+  document.getElementById("modal-background").style.display = "block";
+  document.getElementById("modal").style.display = "block";
 }
-
 
 function closeAddSaleModal() {
-  document.getElementById('sale-form').reset();
-  document.getElementById('modal-background').style.display = 'none';
-  document.getElementById('modal').style.display = 'none';
+  document.getElementById("sale-form").reset();
+  document.getElementById("modal-background").style.display = "none";
+  document.getElementById("modal").style.display = "none";
 }
 
-
 function processSubmitSale() {
-  const workerName = document.getElementById('vendedor-name-field').value;
-  const realEstate = document.getElementById('real-estate-field').value;
-  const salePrice = document.getElementById('sale-price-field').value;
-  const saleDate = document.getElementById('sale-date-field').value;
-  const salesman = document.getElementById('salesman-field').value;
-  const notes = document.getElementById('notes-field').value;
+  const workerName = document.getElementById("vendedor-name-field").value;
+  const realEstate = document.getElementById("real-estate-field").value;
+  const salePrice = document.getElementById("sale-price-field").value;
+  const saleDate = document.getElementById("sale-date-field").value;
+  const salesman = document.getElementById("salesman-field").value;
+  const notes = document.getElementById("notes-field").value;
 
   const saleToSave = new Sale(
     null,
@@ -259,107 +408,90 @@ function processSubmitSale() {
   createSale(saleToSave);
 }
 
-
 function initDeleteSaleButtonHandler() {
-
-  document.querySelectorAll('.btn-delete').forEach(button => {
-
-    button.addEventListener('click', () => {
-
-      const saleId = button.getAttribute('data-sale-id'); // Obtenemos el ID de la venta
+  document.querySelectorAll(".btn-delete").forEach((button) => {
+    button.addEventListener("click", () => {
+      const saleId = button.getAttribute("data-sale-id"); // Obtenemos el ID de la venta
       deleteSale(saleId); // Llamamos a la función para eleminar la venta
-
     });
-
   });
-
 }
-
 
 // Mostrar y ocultar el modal para agregar una nueva venta.
 
 //#endregion
 
-
 //#region 6. CARGAR DATOS DE MODELOS PARA FORM (VIEW)
 
 // Funcion que agrega los datos de los modelos de casas a la tabla.
 function displayRealEstateOptions(realEstates) {
+  const realEstateFilter = document.getElementById("real-estate-filter");
+  const realEstateModal = document.getElementById("real-estate-field");
 
-  const realEstateFilter = document.getElementById('real-estate-filter');
-  const realEstateModal = document.getElementById('real-estate-field');
-
-  realEstates.forEach(realEstate => {
-
-    const optionFilter = document.createElement('option');
+  realEstates.forEach((realEstate) => {
+    const optionFilter = document.createElement("option");
 
     optionFilter.value = realEstate.name;
-    optionFilter.text = `${realEstate.name} - ${formatCurrency(realEstate.price)}`;
+    optionFilter.text = `${realEstate.name} - ${formatCurrency(
+      realEstate.price
+    )}`;
 
     realEstateFilter.appendChild(optionFilter);
 
-    const optionModal = document.createElement('option');
+    const optionModal = document.createElement("option");
 
     optionModal.value = realEstate.name;
-    optionModal.text = `${realEstate.name} - ${formatCurrency(realEstate.price)}`;
+    optionModal.text = `${realEstate.name} - ${formatCurrency(
+      realEstate.price
+    )}`;
 
     realEstateModal.appendChild(optionModal);
   });
-
 }
 
 //#endregion
 
-
 //#region 7. CONSUMO DE DATOS DESDE API
 
 function getRealEstateData() {
-
-  fetchAPI(`${apiURL}/real-estate`, 'GET')
-    .then(data => {
-      const realEstatesList = mapAPIToRealEstateDescriptors(data);
-      displayRealEstateOptions(realEstatesList);
-    });
-
+  fetchAPI(`${apiURL}/real-estate`, "GET").then((data) => {
+    const realEstatesList = mapAPIToRealEstateDescriptors(data);
+    displayRealEstateOptions(realEstatesList);
+  });
 }
-
 
 function getSalesData(realEstate, customerName, salesman, saleDate) {
+  const url = buildGetSalesDataUrl(
+    realEstate,
+    customerName,
+    salesman,
+    saleDate
+  );
 
-  const url = buildGetSalesDataUrl(realEstate, customerName, salesman, saleDate);
-
-  fetchAPI(url, 'GET')
-    .then(data => {
-      const salesList = mapAPIToSales(data);
-      displaySalesView(salesList);
-    });
+  fetchAPI(url, "GET").then((data) => {
+    const salesList = mapAPIToSales(data);
+    displaySalesView(salesList);
+  });
 }
-
 
 function createSale(sale) {
-
-  fetchAPI(`${apiURL}/sales`, 'POST', sale)
-    .then(sale => {
-      closeAddSaleModal();
-      resetSales();
-      window.alert(`Venta ${sale.id} creada correctamente.`);
-    });
-
+  fetchAPI(`${apiURL}/sales`, "POST", sale).then((sale) => {
+    closeAddSaleModal();
+    resetSales();
+    window.alert(`Venta ${sale.id} creada correctamente.`);
+  });
 }
 
-
 function deleteSale(saleId) {
-
-  const confirm = window.confirm(`¿Estás seguro de que deseas eliminar la venta ${saleId}?`);
+  const confirm = window.confirm(
+    `¿Estás seguro de que deseas eliminar la venta ${saleId}?`
+  );
 
   if (confirm) {
-
-    fetchAPI(`${apiURL}/sales/${saleId}`, 'DELETE')
-      .then(() => {
-        resetSales();
-        window.alert("Venta eliminada.");
-      });
-
+    fetchAPI(`${apiURL}/sales/${saleId}`, "DELETE").then(() => {
+      resetSales();
+      window.alert("Venta eliminada.");
+    });
   }
 }
 
@@ -376,26 +508,25 @@ function buildGetSalesDataUrl(realEstate, customerName, salesman, saleDate) {
   const url = new URL(`${apiURL}/sales`);
 
   if (realEstate) {
-    url.searchParams.append('realEstate', realEstate);
+    url.searchParams.append("realEstate", realEstate);
   }
 
   if (customerName) {
-    url.searchParams.append('customerName', customerName);
+    url.searchParams.append("customerName", customerName);
   }
 
   if (salesman) {
-    url.searchParams.append('salesman', salesman);
+    url.searchParams.append("salesman", salesman);
   }
 
   if (saleDate) {
-    url.searchParams.append('saleDate', saleDate);
+    url.searchParams.append("saleDate", saleDate);
   }
 
   return url;
 }
 
 //#endregion
-
 
 //#region 8. INICIALIZAMOS FUNCIONALIDAD (CONTROLLER)
 

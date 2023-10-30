@@ -10,11 +10,7 @@ body {
   background-color: #f3f6f9;
   font-family: Helvetica, sans-serif;
   font-size: 14px;
-<<<<<<< HEAD
-  color: #53569e;
-=======
   color: #344a5e;
->>>>>>> c803d0e7dce66f38a3328cdf8201e34d47be5ecd
   margin: 0;
 }
 
@@ -35,6 +31,25 @@ h1 {
 h2 {
   font-size: 1.5rem;
 }
+
+select {
+  flex-grow: 1;
+  min-width: 200px;
+  font-size: 1rem;
+  padding: 18px;
+  border: 1px solid #d1dde8;
+  border-radius: 3px;
+}
+
+.filter-field {
+  flex-grow: 1;
+  min-width: 200px;
+  font-size: 1rem;
+  padding: 1rem;
+  border: 1px solid #d1dde8;
+  border-radius: 3px;
+}
+
 .text-right {
   text-align: right;
 }
