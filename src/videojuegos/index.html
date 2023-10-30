@@ -22,7 +22,7 @@
       <ul>
         <li><a href="../index.html">Inicio</a></li>
         <li><a href="../sales/index.html">Catálogo</a></li>
-        <li><a href="../videojuegos/index.html">Admin</a></li>
+        <li><a href="../videojuegos/index.html"> Admin</a></li>
 
       </ul>
     </nav>
@@ -34,19 +34,24 @@
 
       <h2>Juegos</h2>
 
-      <!-- <button id="addSale" class="btn-action">Agregar Nueva Venta</button> -->
-
       <!-- Button trigger modal -->
       <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
         Agregar Nueva Venta
       </button>
-
+    </div>
       <!-- Modal -->
+      <br><br>
+      
+      <div id="modal-background" class="modal-background">
+
+      </div>
       <div class="modal modal-lg fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
+
             <div class="modal-header">
+
               <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar Nueva Venta</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -57,7 +62,7 @@
                 <input type="text" id="customer-name-field" class="form-field" required>
 
 
-                <label for="real-estate-field">Modelo de Casa:</label>
+                <label for="real-estate-field">Titulo:</label>
                 <select id="real-estate-field" class="form-field" required>
                   <!-- Llenaremos las opciones con datos consumidos desde una api -->
                 </select>
@@ -67,9 +72,6 @@
 
                 <label for="sale-date-field">Fecha de Venta:</label>
                 <input type="date" id="sale-date-field" class="form-field" required>
-
-                <label for="salesman-field">Vendedor:</label>
-                <input type="text" id="salesman-field" required>
 
                 <label for="notes-field">Detalles de la Venta:</label>
                 <textarea id="notes-field" class="form-field" required></textarea>
@@ -87,7 +89,7 @@
         </div>
       </div>
 
-    </div>
+  
 
     <br>
 
