@@ -10,11 +10,7 @@ body {
   background-color: #f3f6f9;
   font-family: Helvetica, sans-serif;
   font-size: 14px;
-<<<<<<< HEAD
-  color: #53569e;
-=======
   color: #344a5e;
->>>>>>> c803d0e7dce66f38a3328cdf8201e34d47be5ecd
   margin: 0;
 }
 
@@ -28,7 +24,7 @@ main {
 }
 
 h1 {
-  font-size: 1.75rem;
+  font-size: 3.75rem;
   margin-bottom: 20px;
 }
 
@@ -79,7 +75,7 @@ header {
   background-color: #344a5e;
   color: #fff;
   text-align: center;
-  font-size: 1.25rem;
+  font-size: 1rem;
   line-height: 1.25rem;
   max-height: 88px;
   min-height: 88px;
