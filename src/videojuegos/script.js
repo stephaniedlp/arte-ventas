@@ -1,98 +1,40 @@
-class Task {
-  constructor(id, title, description, completed, priority, tag, dueDate) {
+class Game {
+  constructor(id, workerName, gameTitle, gameNote, gamePrice, gameDate) {
     this.id = id;
-    this.title = title;
-    this.description = description;
-    this.completed = completed;
-    this.priority = priority;
-    this.tag = tag;
-    this.dueDate = dueDate;
+    this.workerName = workerName;
+    this.gameTitle = gameTitle;
+    this.gameNote = gameNote;
+    this.gamePrice = gamePrice;
+    this.gameDate = gameDate;
   }
 }
 
 function mapAPIToTasks(data) {
   return data.map((item) => {
-    return new Task(
+    return new Game(
       item.id,
-      item.title,
-      item.description,
-      item.completed,
-      item.priority,
-      item.tag,
-      new Date(item.dueDate)
+      item.workerName,
+      item.gameTitle,
+      item.gameNote,
+      item.gamePrice,
+      new Date(item.gameDate)
     );
   });
 }
 
 function APIToTask(data) {
-  return new Task(
+  return new Game(
     data.id,
-    data.title,
-    data.description,
-    data.completed,
-    data.priority,
-    data.tag,
-    new Date(data.dueDate)
+    data.workerName,
+    data.gameTitle,
+    data.gameNote,
+    data.gamePrice,
+    new Date(data.gameDate)
   );
 }
 
-class Game {
-  constructor(id, title, description, platform, rating, price, image) {
-    this.id = id;
-    this.title = title;
-    this.description = description;
-    this.platform = platform;
-    this.rating = rating;
-    this.price = price;
-    this.image = image;
-  }
-}
 
-const game1 = new Game(
-  1,
-  "No More Heroes",
-  "Juego de acción en 3D",
-  "Wii",
-  85,
-  600,
-  "nmh.jpg"
-);
-const game2 = new Game(
-  2,
-  "Hello Kitty: Roller Rescue",
-  "Juego de carreras en 3D",
-  "GameCube",
-  64,
-  400,
-  "hkrr.jpg"
-);
-const game3 = new Game(
-  3,
-  "Castlevania: Dawn of Sorrow",
-  "Plataformas, puzzle y acción en 2D lateral",
-  "Nintendo DS",
-  89,
-  250,
-  "cdos.jpg"
-);
 
-const gameList = [game1, game2, game3];
-
-console.log("Impresion en consola de elementos accesados por indices: ");
-console.log(gameList[0]);
-console.log(gameList[1]);
-console.log(gameList[2]);
-
-console.log("Impresion en consola de elementos accesados con forEach(): ");
-gameList.forEach((item) => {
-  console.log(item);
-});
-
-// Accedemos datos con funcion forEach() de array
-console.log("Impresion en consola de elementos accesados con forEach(): ");
-gameList.forEach((item) => {
-  console.log(item);
-});
 
 // Funcion que controla el despliegue de un array de juevos en la tabla, asi como el mensaje a mostrar.
 function displayTable(games) {
@@ -100,43 +42,39 @@ function displayTable(games) {
 
   showLoadingMessage();
 
-  setTimeout(() => {
     if (games.length === 0) {
       showNotFoundMessage();
     } else {
       hideMessage();
 
-      const tablaBody = document.getElementById("data-table-body");
-
-      const imagePath = `/public/games/`;
-
-      games.forEach((game) => {
-        const row = document.createElement("tr");
-
-        row.innerHTML = `
-              <td> ${game.id} </td>
-              
-              <td>${game.title}</td>
-              <td>${game.description}</td>
-              <td>${game.platform}</td>
-              <td>${game.rating}</td>
-              <td>${game.price}</td>
-              <td> <img src="${imagePath + game.image}" alt="${
-                game.title
-              }" width="100"> </td>
-            `;
-
-        tablaBody.appendChild(row);
-      });
     }
-  }, 200);
 }
-
 function mapAPIToGameDescriptors(data) {
   return data.map((item) => {
     return new GameDescriptor(item.id, item.name, item.price);
   });
 }
+
+function displayGamesTable(games){
+    
+    const tablaBody = document.getElementById("data-table-body");
+
+
+    games.forEach(game => {
+      const row = document.createElement("tr");
+
+      row.innerHTML = `
+            <td> ${game.id} </td>
+            <td>${game.workerName}</td>
+            <td>${game.gameTitle}</td>
+            <td>${game.gameNote}</td>
+            <td>${game.gamePrice}</td>
+            <td>${game.gameDate}</td>
+          `;
+
+      tablaBody.appendChild(row);
+    });
+  }
 
 function clearTable() {
   const tableBody = document.getElementById("data-table-body");
@@ -425,7 +363,7 @@ function initDeleteSaleButtonHandler() {
 //#region 6. CARGAR DATOS DE MODELOS PARA FORM (VIEW)
 
 // Funcion que agrega los datos de los modelos de casas a la tabla.
-function displayRealEstateOptions(realEstates) {
+function displayVideojuegosOptions(videojuegos) {
   const realEstateFilter = document.getElementById("real-estate-filter");
   const realEstateModal = document.getElementById("real-estate-field");
 
@@ -455,7 +393,7 @@ function displayRealEstateOptions(realEstates) {
 //#region 7. CONSUMO DE DATOS DESDE API
 
 function getRealEstateData() {
-  fetchAPI(`${apiURL}/real-estate`, "GET").then((data) => {
+  fetchAPI(`${apiURL}/videojuegos`, "GET").then((data) => {
     const realEstatesList = mapAPIToRealEstateDescriptors(data);
     displayRealEstateOptions(realEstatesList);
   });
