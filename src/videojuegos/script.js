@@ -115,14 +115,15 @@ function displayTable(games) {
 
         row.innerHTML = `
               <td> ${game.id} </td>
-              <td> <img src="${imagePath + game.image}" alt="${
-          game.title
-        }" width="100"> </td>
+              
               <td>${game.title}</td>
               <td>${game.description}</td>
               <td>${game.platform}</td>
               <td>${game.rating}</td>
               <td>${game.price}</td>
+              <td> <img src="${imagePath + game.image}" alt="${
+                game.title
+              }" width="100"> </td>
             `;
 
         tablaBody.appendChild(row);
