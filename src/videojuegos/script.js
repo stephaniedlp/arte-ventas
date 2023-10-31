@@ -1,3 +1,6 @@
+//#region 2. MODELO DE DATOS (MODELS)
+
+// Definimos la clase Game
 class Game {
   constructor(id, workerName, gameTitle, gameNote, gamePrice, gameDate) {
     this.id = id;
@@ -11,7 +14,7 @@ class Game {
 
 function mapAPIToTasks(data) {
   return data.map((item) => {
-    return new Game(
+    return new Sale(
       item.id,
       item.workerName,
       item.gameTitle,
@@ -20,17 +23,6 @@ function mapAPIToTasks(data) {
       new Date(item.gameDate)
     );
   });
-}
-
-function APIToTask(data) {
-  return new Game(
-    data.id,
-    data.workerName,
-    data.gameTitle,
-    data.gameNote,
-    data.gamePrice,
-    new Date(data.gameDate)
-  );
 }
 
 
@@ -46,7 +38,7 @@ function displayTable(games) {
       showNotFoundMessage();
     } else {
       hideMessage();
-
+      displayGamesTable(games);
     }
 }
 function mapAPIToGameDescriptors(data) {
@@ -74,6 +66,8 @@ function displayGamesTable(games){
 
       tablaBody.appendChild(row);
     });
+    
+  initDeleteSaleButtonHandler();
   }
 
 function clearTable() {
@@ -105,7 +99,14 @@ function hideMessage() {
 
   message.style.display = "none";
 }
-
+function searchSales() {
+    const videojuegos = document.getElementById('video-juegos-filter').value;
+    const customerName = document.getElementById('customer-filter').value;
+    const salesman = document.getElementById('salesman-filter').value;
+    const saleDate = document.getElementById('date-filter').value;
+  
+    getSalesData(realEstate, customerName, salesman, saleDate);
+  }
 //#endregion
 
 //#region FILTROS (VIEW)
@@ -114,14 +115,14 @@ function hideMessage() {
 function initButtonsHandler() {
   document.getElementById("filter-form").addEventListener("submit", (event) => {
     event.preventDefault();
-    applyFilters();
+    searchSales();
   });
 
   document.getElementById("reset-filters").addEventListener("click", () => {
     document
       .querySelectorAll("input.filter-field")
       .forEach((input) => (input.value = ""));
-    applyFilters();
+    
   });
 }
 
@@ -287,12 +288,12 @@ function resetSales() {
 }
 
 function searchSales() {
-  const realEstate = document.getElementById("real-estate-filter").value;
+  const gameName = document.getElementById("real-estate-filter").value;
   const customerName = document.getElementById("customer-filter").value;
   const salesman = document.getElementById("salesman-filter").value;
   const saleDate = document.getElementById("date-filter").value;
 
-  getSalesData(realEstate, customerName, salesman, saleDate);
+  getSalesData(gameName, customerName, salesman, saleDate);
 }
 
 //#endregion
@@ -328,20 +329,18 @@ function closeAddSaleModal() {
 
 function processSubmitSale() {
   const workerName = document.getElementById("vendedor-name-field").value;
-  const realEstate = document.getElementById("real-estate-field").value;
-  const salePrice = document.getElementById("sale-price-field").value;
-  const saleDate = document.getElementById("sale-date-field").value;
-  const salesman = document.getElementById("salesman-field").value;
-  const notes = document.getElementById("notes-field").value;
+  const gameTitle = document.getElementById("video-juegos-field").value;
+  const gamePrice = document.getElementById("sale-price-field").value;
+  const gameDate = document.getElementById("sale-date-field").value;
+  const gameNote = document.getElementById("notes-field").value;
 
   const saleToSave = new Sale(
     null,
     workerName,
-    saleDate,
-    salesman,
-    realEstate,
+    gameTitle,
     parseFloat(gamePrice),
-    gamenotes
+    gameDate,
+    gameNote
   );
 
   createSale(saleToSave);
@@ -356,35 +355,33 @@ function initDeleteSaleButtonHandler() {
   });
 }
 
-// Mostrar y ocultar el modal para agregar una nueva venta.
-
 //#endregion
 
 //#region 6. CARGAR DATOS DE MODELOS PARA FORM (VIEW)
 
 // Funcion que agrega los datos de los modelos de casas a la tabla.
-function displayVideojuegosOptions(videojuegos) {
-  const realEstateFilter = document.getElementById("real-estate-filter");
-  const realEstateModal = document.getElementById("real-estate-field");
+function displayGameOptions(gameTitle) {
+  const gameFilter = document.getElementById("video-juegos-filter");
+  const gameModal = document.getElementById("video-juegos-filter");
 
-  realEstates.forEach((realEstate) => {
+  realEstates.forEach((gameTitle) => {
     const optionFilter = document.createElement("option");
 
-    optionFilter.value = realEstate.name;
-    optionFilter.text = `${realEstate.name} - ${formatCurrency(
-      realEstate.price
+    optionFilter.value = gameTitle.name;
+    optionFilter.text = `${gameTitle.name} - ${formatCurrency(
+        gameTitle.price
     )}`;
 
-    realEstateFilter.appendChild(optionFilter);
+    gameFilter.appendChild(optionFilter);
 
     const optionModal = document.createElement("option");
 
-    optionModal.value = realEstate.name;
-    optionModal.text = `${realEstate.name} - ${formatCurrency(
-      realEstate.price
+    optionModal.value = gameTitle.name;
+    optionModal.text = `${gameTitle.name} - ${formatCurrency(
+        gameTitle.price
     )}`;
 
-    realEstateModal.appendChild(optionModal);
+    gameModal.appendChild(optionModal);
   });
 }
 
@@ -392,29 +389,26 @@ function displayVideojuegosOptions(videojuegos) {
 
 //#region 7. CONSUMO DE DATOS DESDE API
 
-function getRealEstateData() {
-  fetchAPI(`${apiURL}/videojuegos`, "GET").then((data) => {
-    const realEstatesList = mapAPIToRealEstateDescriptors(data);
-    displayRealEstateOptions(realEstatesList);
+function getGamesData() {
+  fetchAPI(`${apiURL}/videojuegos`, "GET")
+  .then((data) => {
+    const gameList = mapAPIToGameDescriptors(data);
+    displayGameOptions(gameList);
   });
 }
 
-function getSalesData(realEstate, customerName, salesman, saleDate) {
-  const url = buildGetSalesDataUrl(
-    realEstate,
-    customerName,
-    salesman,
-    saleDate
-  );
+function getSalesData(workerName, gameTitle, gameNote, gameDate) {
+  const url = buildGetSalesDataUrl( workerName,  gameTitle,  gameNote,  gameDate );
 
-  fetchAPI(url, "GET").then((data) => {
+  fetchAPI(url, "GET")
+  .then((data) => {
     const salesList = mapAPIToSales(data);
     displaySalesView(salesList);
   });
 }
 
 function createSale(sale) {
-  fetchAPI(`${apiURL}/sales`, "POST", sale).then((sale) => {
+  fetchAPI(`${apiURL}/Venta`, "POST", sale).then((sale) => {
     closeAddSaleModal();
     resetSales();
     window.alert(`Venta ${sale.id} creada correctamente.`);
@@ -427,7 +421,7 @@ function deleteSale(saleId) {
   );
 
   if (confirm) {
-    fetchAPI(`${apiURL}/sales/${saleId}`, "DELETE").then(() => {
+    fetchAPI(`${apiURL}/Venta/${saleId}`, "DELETE").then(() => {
       resetSales();
       window.alert("Venta eliminada.");
     });
@@ -435,7 +429,7 @@ function deleteSale(saleId) {
 }
 
 // Funcion que genera la url para consultar ventas con filtros.
-function buildGetSalesDataUrl(realEstate, customerName, salesman, saleDate) {
+function  buildGetSalesDataUrl( workerName,  gameTitle,  gameNote,  gameDate ) {
   // Tecnica de string dinamico: se aconseja cuando tenemos una cantidad limitada de parámetros y
   //    cierto control de los tipos de parametros (id, fechas).
   // const url = `${apiURL}/sales?realEstate=${realEstate}&customerName=${customerName}&salesman=${salesman}&saleDate=${saleDate}`;
@@ -444,7 +438,7 @@ function buildGetSalesDataUrl(realEstate, customerName, salesman, saleDate) {
   //    facilitan la gestión de múltiples parámetros y textos dinámicos al encargarse de
   //    la codificación y decodificación de caracteres especiales, lo que evita problemas
   //    comunes relacionados con espacios y caracteres no válidos.
-  const url = new URL(`${apiURL}/sales`);
+  const url = new URL(`${apiURL}/Venta`);
 
   if (realEstate) {
     url.searchParams.append("realEstate", realEstate);
@@ -473,6 +467,6 @@ initAddSaleButtonsHandler();
 
 initFilterButtonsHandler();
 
-getRealEstateData();
+getGamesData();
 
 //#endregion
