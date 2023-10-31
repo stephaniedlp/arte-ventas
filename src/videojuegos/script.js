@@ -14,7 +14,7 @@ class Game {
 
 function mapAPIToTasks(data) {
   return data.map((item) => {
-    return new Sale(
+    return new Game(
       item.id,
       item.workerName,
       item.gameTitle,
@@ -25,194 +25,80 @@ function mapAPIToTasks(data) {
   });
 }
 
+class GameDescriptor {
 
+    constructor(id, title, price) {
+      this.id = id;
+      this.title = title;
+      this.price = price;
+    }
+  
+  }
+  
+  
+  function mapAPIToGameDescriptors(data) {
+    return data.map(item => {
+      return new GameDescriptor(
+        item.id,
+        item.title,
+        item.price
+      );
+    });
+  }
 
+//#region 3. VENTAS (VIEW)
 
-// Funcion que controla el despliegue de un array de juevos en la tabla, asi como el mensaje a mostrar.
-function displayTable(games) {
-  clearTable();
+function displayGamesView(games) {
 
-  showLoadingMessage();
-
+    clearTable();
+  
+    showLoadingMessage();
+  
     if (games.length === 0) {
+  
       showNotFoundMessage();
+  
     } else {
+  
       hideMessage();
+  
       displayGamesTable(games);
     }
-}
-function mapAPIToGameDescriptors(data) {
-  return data.map((item) => {
-    return new GameDescriptor(item.id, item.name, item.price);
-  });
+  
+  }
+  
+  
+function displayClearSalesView() {
+clearTable();
+
+showInitialMessage();
 }
 
+// Funcion que agrega los datos de los modelos de casas a la tabla.
 function displayGamesTable(games){
-    
+
     const tablaBody = document.getElementById("data-table-body");
 
 
     games.forEach(game => {
-      const row = document.createElement("tr");
 
-      row.innerHTML = `
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
             <td> ${game.id} </td>
             <td>${game.workerName}</td>
             <td>${game.gameTitle}</td>
             <td>${game.gameNote}</td>
-            <td>${game.gamePrice}</td>
-            <td>${game.gameDate}</td>
-          `;
+            <td>${formatCurrency(game.gamePrice)}</td>
+            <td>${formatDate(game.gameDate)}</td>
+            `;
 
-      tablaBody.appendChild(row);
+        tablaBody.appendChild(row);
     });
-    
-  initDeleteSaleButtonHandler();
-  }
 
-function clearTable() {
-  const tableBody = document.getElementById("data-table-body");
-
-  tableBody.innerHTML = "";
+    initDeleteSaleButtonHandler();
 }
 
-function showLoadingMessage() {
-  const message = document.getElementById("message");
-
-  message.innerHTML = "Cargando...";
-
-  message.style.display = "block";
-}
-
-// Funcion que muestra mensaje de que no se encuentraron datos
-function showNotFoundMessage() {
-  const message = document.getElementById("message");
-
-  message.innerHTML = "No se encontraron juegos con el filtro proporcionado.";
-
-  message.style.display = "block";
-}
-
-// Funcion que oculta mensaje
-function hideMessage() {
-  const message = document.getElementById("message");
-
-  message.style.display = "none";
-}
-function searchSales() {
-    const videojuegos = document.getElementById('video-juegos-filter').value;
-    const customerName = document.getElementById('customer-filter').value;
-    const salesman = document.getElementById('salesman-filter').value;
-    const saleDate = document.getElementById('date-filter').value;
-  
-    getSalesData(realEstate, customerName, salesman, saleDate);
-  }
-//#endregion
-
-//#region FILTROS (VIEW)
-
-// Funcion que inicializa los eventos de los botones del filto
-function initButtonsHandler() {
-  document.getElementById("filter-form").addEventListener("submit", (event) => {
-    event.preventDefault();
-    searchSales();
-  });
-
-  document.getElementById("reset-filters").addEventListener("click", () => {
-    document
-      .querySelectorAll("input.filter-field")
-      .forEach((input) => (input.value = ""));
-    
-  });
-}
-
-// Funcion que gestiona la aplicacion del filtro a los datos y su despliegue.
-function applyFilters() {
-  const filterText = document.getElementById("text").value.toLowerCase();
-  const filterPlatform = parseFloat(
-    document.getElementById("platform").value
-  ).toLowerCase();
-  const filterMinPrice = parseFloat(document.getElementById("price-min").value);
-  const filterMaxPrice = parseFloat(document.getElementById("price-max").value);
-
-  const filteredGames = filterGames(
-    gameList,
-    filterText,
-    filterPlatform,
-    filterMinPrice,
-    filterMaxPrice
-  );
-
-  displayTable(filteredGames);
-}
-
-// Funcion con la logica para filtrar
-function filterGames(games, text, platform, minPrice, maxPrice) {
-  return games.filter(
-    (game) =>
-      (!platform || game.platform.toLowerCase().includes(platform)) &&
-      (!minPrice || game.price >= minPrice) &&
-      (!maxPrice || game.price <= maxPrice) &&
-      (!text ||
-        game.title.toLowerCase().includes(text) ||
-        game.description.toLowerCase().includes(text))
-  );
-}
-
-//#endregion
-
-//#region INICIALIZAMOS FUNCIONALIDAD (CONTROLLER)
-
-displayTable(gameList);
-
-initButtonsHandler();
-
-//#region 3. VENTAS (VIEW)
-
-function displaySalesView(ventas) {
-  clearTable();
-
-  showLoadingMessage();
-
-  if (ventas.length === 0) {
-    showNotFoundMessage();
-  } else {
-    hideMessage();
-
-    displaySalesTable(ventas);
-  }
-}
-
-function displayClearSalesView() {
-  clearTable();
-
-  showInitialMessage();
-}
-
-// Funcion que agrega los datos de los modelos de casas a la tabla.
-function displaySalesTable(ventas) {
-  const tablaBody = document.getElementById("data-table-body");
-
-  sales.forEach((venta) => {
-    const row = document.createElement("tr");
-
-    row.innerHTML = `
-      <td>${ventas.id}</td>
-      <td>${ventas.workerName}</td>
-      <td>${ventas.gameName}</td>
-      <td>${formatDate(ventas.gameDate)}</td>
-      <td class="text-right">${formatCurrency(ventas.gamePrice)}</td>
-      <td>${ventas.gameNote}</td>
-      <td>
-        <button class="btn-delete" data-sale-id="${ventas.id}">Eliminar</button>
-      </td>
-    `;
-
-    tablaBody.appendChild(row);
-  });
-
-  initDeleteSaleButtonHandler();
-}
 
 // Funcion que limpia la tabla
 function clearTable() {
@@ -230,23 +116,26 @@ function showLoadingMessage() {
   message.style.display = "block";
 }
 
+
 // Funcion que muestra mensaje de carga
 function showInitialMessage() {
-  const message = document.getElementById("message");
-
-  message.innerHTML = "No se ha realizado una consulta de ventas.";
-
-  message.style.display = "block";
+    const message = document.getElementById('message');
+  
+    message.innerHTML = 'No se ha realizado una consulta de ventas.';
+  
+    message.style.display = 'block';
 }
+  
 
 // Funcion que muestra mensaje de que no se encuentraron datos
 function showNotFoundMessage() {
   const message = document.getElementById("message");
 
-  message.innerHTML = "No se encontraron casas con el filtro proporcionado.";
+  message.innerHTML = "No se encontraron juegos con el filtro proporcionado.";
 
   message.style.display = "block";
 }
+
 
 // Funcion que oculta mensaje
 function hideMessage() {
@@ -257,46 +146,47 @@ function hideMessage() {
 
 //#endregion
 
+
 //#region 4. FILTROS (VIEW)
 
 function initFilterButtonsHandler() {
   document.getElementById("filter-form").addEventListener("submit", (event) => {
+    debugger
     event.preventDefault();
     searchSales();
   });
 
-  document
-    .getElementById("reset-filters")
-    .addEventListener("click", () => clearSales());
+  document.getElementById('reset-filters').addEventListener('click', () => clearSales());
+
 }
+
 
 function clearSales() {
-  document.querySelector("select.filter-field").selectedIndex = 0;
-  document
-    .querySelectorAll("input.filter-field")
-    .forEach((input) => (input.value = ""));
-
-  displayClearSalesView();
+    document.querySelector('select.filter-field').selectedIndex = 0;
+    document.querySelectorAll('input.filter-field').forEach(input => input.value = '');
+  
+    displayClearSalesView();
 }
+
 
 function resetSales() {
-  document.querySelector("select.filter-field").selectedIndex = 0;
-  document
-    .querySelectorAll("input.filter-field")
-    .forEach((input) => (input.value = ""));
-  searchSales();
+document.querySelector('select.filter-field').selectedIndex = 0;
+document.querySelectorAll('input.filter-field').forEach(input => input.value = '');
+searchSales();
 }
 
-function searchSales() {
-  const gameName = document.getElementById("real-estate-filter").value;
-  const customerName = document.getElementById("customer-filter").value;
-  const salesman = document.getElementById("salesman-filter").value;
-  const saleDate = document.getElementById("date-filter").value;
 
-  getSalesData(gameName, customerName, salesman, saleDate);
+function searchSales() {
+const videoGames = document.getElementById('video-juegos-filter').value;
+const customerName = document.getElementById('customer-filter').value;
+const salesman = document.getElementById('salesman-filter').value;
+const saleDate = document.getElementById('date-filter').value;
+
+getSalesData(videoGames, customerName, salesman, saleDate);
 }
 
 //#endregion
+
 
 //#region 5. BOTONES PARA AGREGAR Y ELIMINAR VENTAS (VIEW)
 
@@ -329,12 +219,12 @@ function closeAddSaleModal() {
 
 function processSubmitSale() {
   const workerName = document.getElementById("vendedor-name-field").value;
-  const gameTitle = document.getElementById("video-juegos-field").value;
+  const gameTitle = document.getElementById("game-title-field").value;
   const gamePrice = document.getElementById("sale-price-field").value;
   const gameDate = document.getElementById("sale-date-field").value;
   const gameNote = document.getElementById("notes-field").value;
 
-  const saleToSave = new Sale(
+  const saleToSave = new Game(
     null,
     workerName,
     gameTitle,
@@ -362,24 +252,21 @@ function initDeleteSaleButtonHandler() {
 // Funcion que agrega los datos de los modelos de casas a la tabla.
 function displayGameOptions(gameTitle) {
   const gameFilter = document.getElementById("video-juegos-filter");
-  const gameModal = document.getElementById("video-juegos-filter");
+  const gameModal = document.getElementById("games-modal");
 
-  realEstates.forEach((gameTitle) => {
+  gameTitle.forEach((gameTitle) => {
+
     const optionFilter = document.createElement("option");
 
-    optionFilter.value = gameTitle.name;
-    optionFilter.text = `${gameTitle.name} - ${formatCurrency(
-        gameTitle.price
-    )}`;
+    optionFilter.value = gameTitle.title;
+    optionFilter.text = `${gameTitle.title} - ${formatCurrency(gameTitle.price)}`;
 
     gameFilter.appendChild(optionFilter);
 
     const optionModal = document.createElement("option");
 
-    optionModal.value = gameTitle.name;
-    optionModal.text = `${gameTitle.name} - ${formatCurrency(
-        gameTitle.price
-    )}`;
+    optionModal.value = gameTitle.title;
+    optionModal.text = `${gameTitle.title} - ${formatCurrency(gameTitle.price)}`;
 
     gameModal.appendChild(optionModal);
   });
@@ -389,7 +276,7 @@ function displayGameOptions(gameTitle) {
 
 //#region 7. CONSUMO DE DATOS DESDE API
 
-function getGamesData() {
+function getVideoGamesData() {
   fetchAPI(`${apiURL}/videojuegos`, "GET")
   .then((data) => {
     const gameList = mapAPIToGameDescriptors(data);
@@ -397,31 +284,32 @@ function getGamesData() {
   });
 }
 
-function getSalesData(workerName, gameTitle, gameNote, gameDate) {
-  const url = buildGetSalesDataUrl( workerName,  gameTitle,  gameNote,  gameDate );
+function getSalesData(videoGames, customerName, salesman, saleDate) {
+ 
+  const url = buildGetSalesDataUrl( videoGames,  customerName,  salesman,  saleDate );
 
   fetchAPI(url, "GET")
   .then((data) => {
-    const salesList = mapAPIToSales(data);
-    displaySalesView(salesList);
+    const salesList = mapAPIToTasks(data);
+    displayGamesView(salesList);
   });
 }
 
-function createSale(sale) {
-  fetchAPI(`${apiURL}/Venta`, "POST", sale).then((sale) => {
+function createSale(venta) {
+  fetchAPI(`${apiURL}/venta`, "POST", venta).then((venta) => {
     closeAddSaleModal();
     resetSales();
-    window.alert(`Venta ${sale.id} creada correctamente.`);
+    window.alert(`Venta ${venta.id} creada correctamente.`);
   });
 }
 
-function deleteSale(saleId) {
+function deleteSale(ventaId) {
   const confirm = window.confirm(
-    `¿Estás seguro de que deseas eliminar la venta ${saleId}?`
+    `¿Estás seguro de que deseas eliminar la venta ${ventaId}?`
   );
 
   if (confirm) {
-    fetchAPI(`${apiURL}/Venta/${saleId}`, "DELETE").then(() => {
+    fetchAPI(`${apiURL}/venta/${ventaId}`, "DELETE").then(() => {
       resetSales();
       window.alert("Venta eliminada.");
     });
@@ -429,7 +317,7 @@ function deleteSale(saleId) {
 }
 
 // Funcion que genera la url para consultar ventas con filtros.
-function  buildGetSalesDataUrl( workerName,  gameTitle,  gameNote,  gameDate ) {
+function  buildGetSalesDataUrl( videoGames, customerName, salesman, saleDate) {
   // Tecnica de string dinamico: se aconseja cuando tenemos una cantidad limitada de parámetros y
   //    cierto control de los tipos de parametros (id, fechas).
   // const url = `${apiURL}/sales?realEstate=${realEstate}&customerName=${customerName}&salesman=${salesman}&saleDate=${saleDate}`;
@@ -438,10 +326,10 @@ function  buildGetSalesDataUrl( workerName,  gameTitle,  gameNote,  gameDate ) {
   //    facilitan la gestión de múltiples parámetros y textos dinámicos al encargarse de
   //    la codificación y decodificación de caracteres especiales, lo que evita problemas
   //    comunes relacionados con espacios y caracteres no válidos.
-  const url = new URL(`${apiURL}/Venta`);
+  const url = new URL(`${apiURL}/venta`);
 
-  if (realEstate) {
-    url.searchParams.append("realEstate", realEstate);
+  if (videoGames) {
+    url.searchParams.append("videoGames", videoGames);
   }
 
   if (customerName) {
@@ -467,6 +355,6 @@ initAddSaleButtonsHandler();
 
 initFilterButtonsHandler();
 
-getGamesData();
+getVideoGamesData();
 
 //#endregion

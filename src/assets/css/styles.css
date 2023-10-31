@@ -1,5 +1,4 @@
-@charset "UTF-8";
-@import url("");
+@import url("https://fonts.googleapis.com/css?family=Jost");
 * {
   margin: 0;
   padding: 0;
@@ -8,9 +7,9 @@
 
 body {
   background-color: #f3f6f9;
-  font-family: Helvetica, sans-serif;
+  font-family: "Jost", sans-serif;
   font-size: 14px;
-  color: #344a5e;
+  color: #283848;
   margin: 0;
 }
 
@@ -24,30 +23,11 @@ main {
 }
 
 h1 {
-  font-size: 3.75rem;
-  margin-bottom: 20px;
+  font-size: 1.75rem;
 }
 
 h2 {
   font-size: 1.5rem;
-}
-
-select {
-  flex-grow: 1;
-  min-width: 200px;
-  font-size: 1rem;
-  padding: 18px;
-  border: 1px solid #d1dde8;
-  border-radius: 3px;
-}
-
-.filter-field {
-  flex-grow: 1;
-  min-width: 200px;
-  font-size: 1rem;
-  padding: 1rem;
-  border: 1px solid #d1dde8;
-  border-radius: 3px;
 }
 
 .text-right {
@@ -86,26 +66,139 @@ select {
   }
 }
 
+.filter-section {
+  background-color: white;
+  padding: 1.5rem;
+  border: none;
+  border: 1px solid #d1dde8;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  border-radius: 3px;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  width: 50vw;
+  background-color: white;
+  padding: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+}
+
+input,
+textarea,
+select {
+  font-size: 1rem;
+  padding: 1rem;
+  border: 1px solid #d1dde8;
+  border-radius: 3px;
+}
+
+input:focus, input:hover, input:active,
+textarea:focus,
+textarea:hover,
+textarea:active,
+select:focus,
+select:hover,
+select:active {
+  border: 1px solid #ffa3a3;
+}
+
+input[type="text"],
+input[type="number"] {
+  flex-grow: 1;
+  min-width: 200px;
+}
+
+input[type="date"] {
+  width: 150px;
+  display: flex;
+  flex-direction: row;
+}
+
+select {
+  flex-grow: 1;
+  min-width: 200px;
+}
+
+button {
+  border: none;
+  border-radius: 3px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 1rem;
+  padding: 1rem 1.5rem;
+}
+
+button.btn {
+  background-color: #f3f6f9;
+  color: #283848;
+}
+
+button.btn:hover {
+  background-color: #e2e9f1;
+}
+
+button.btn-action {
+  background-color: #ffa3a3;
+  color: #fff;
+}
+
+button.btn-action:hover {
+  background-color: #ff7070;
+}
+
+button.btn-submit {
+  background-color: #3398db;
+  color: #fff;
+}
+
+button.btn-submit:hover {
+  background-color: #217dba;
+}
+
+button.btn-delete {
+  background-color: white;
+  border: 2px solid red;
+  color: red;
+}
+
+button.btn-delete:hover {
+  background-color: #ffbdbd;
+}
+
 header {
   display: flex;
   flex-direction: row;
-  justify-content: start;
+  justify-content: center;
   align-items: center;
-  background-color: #344a5e;
+  background-color: #5ebaa6;
+  box-shadow: 0 8px 8px -4px #bababa;
   color: #fff;
   text-align: center;
-  font-size: 1rem;
+  font-size: 1.25rem;
   line-height: 1.25rem;
   max-height: 88px;
   min-height: 88px;
   height: 88px;
-  padding: 0 40px;
 }
 
 header nav ul {
   display: block;
   text-transform: uppercase;
   list-style: none;
+  padding: 0;
+  text-align: center;
+  margin: 0;
 }
 
 header nav li {
@@ -152,6 +245,28 @@ header nav a {
   }
 }
 
+.modal-background {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 .table-container {
   max-width: 100%;
   overflow-x: auto;
@@ -166,7 +281,7 @@ table {
 }
 
 table thead tr {
-  background-color: #84a586;
+  background-color: #309d22;
   color: #fff;
   text-align: left;
 }
@@ -187,7 +302,7 @@ table tbody tr:nth-of-type(even) {
 }
 
 table tbody tr:last-of-type {
-  border-bottom: 4px solid #354a5f;
+  border-bottom: 4px solid #ffa3a3;
 }
 
 table tbody tr td {
@@ -206,76 +321,3 @@ table tbody tr td img {
   font-size: 1rem;
   padding: 2rem;
 }
-
-/* Estilos para la sección de filtros */
-#filter-section {
-  background-color: white;
-  padding: 2rem;
-  border: none;
-  border: 1px solid #d1dde8;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  align-items: center;
-  border-radius: 3px;
-}
-
-/* Estilos para los campos de filtro */
-input[type="text"],
-input[type="number"] {
-  flex-grow: 1;
-  min-width: 200px;
-  font-size: 1rem;
-  padding: 1rem;
-  border: 1px solid #d1dde8;
-  border-radius: 3px;
-}
-
-input[type="text"]:focus, input[type="text"]:hover, input[type="text"]:active,
-input[type="number"]:focus,
-input[type="number"]:hover,
-input[type="number"]:active {
-  border: 1px solid #354a5f;
-}
-
-/* Estilos para el botón del filtro */
-button {
-  border: none;
-  border-radius: 3px;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  font-size: 1rem;
-  padding: 1rem 1.5rem;
-}
-
-
-button.btn-submit {
-  background-color: #ff8431;
-  color: #fff;
-}
-
-button.btn-submit:hover {
-  background-color: #f28842bc;
-}
-
-
-button.btn {
-  background-color: #ffdfa96b;
-  color: #283848;
-}
-
-button.btn:hover {
-  background-color: #ffcf90;
-}
-
-.form-section {
-  display: flex;
-  flex-direction: column;
-  width: 50vw;
-  background-color: white;
-  padding: 1rem;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
