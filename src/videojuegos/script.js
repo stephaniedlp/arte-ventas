@@ -91,6 +91,9 @@ function displayGamesTable(games){
             <td>${game.gameNote}</td>
             <td>${formatCurrency(game.gamePrice)}</td>
             <td>${formatDate(game.gameDate)}</td>
+            <td>
+                <button class="btn-delete" data-sale-id="${game.id}">Eliminar</button>
+            </td>
             `;
 
         tablaBody.appendChild(row);
@@ -151,7 +154,6 @@ function hideMessage() {
 
 function initFilterButtonsHandler() {
   document.getElementById("filter-form").addEventListener("submit", (event) => {
-    debugger
     event.preventDefault();
     searchSales();
   });

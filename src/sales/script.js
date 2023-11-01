@@ -1,6 +1,6 @@
 //#region  MODELO DE DATOS (MODELS)
  
-const imagePath = `../assets/img/juegos/`;
+const imagePath = `./assets/img/juegos`;
 let gameList = [];
 // Definimos la clase Game
 class Game {
