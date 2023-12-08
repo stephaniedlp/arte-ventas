@@ -3,11 +3,16 @@
 Es momento de desarrollar la pagina de ventas y conectarla a una API.
 
 1) Definan la API, sus recursos y endpoints, deben realizar al menos un GET, POST y un DELETE. Para la API pueden utilizar mockAPI como hicimos en el proyecto de clases (https://mockapi.io/).
+
 2) Realicen el maquetado de la pagina de ventas, como se especifica en el documento anexo debe contener:
+   
       1. Lista de ventas realizadas (GET).
+
       2. Acción de agregar nuevas ventas (POST).
+
       3. Acción de eliminar ventas (DELETE).
-3) Conecten su pagina con la API utilizando fetch API, recuerden refrescar la lista de ventas cada que se agreguen o eliminen ventas.
+   
+4) Conecten su pagina con la API utilizando fetch API, recuerden refrescar la lista de ventas cada que se agreguen o eliminen ventas.
 
 
 Documento:
